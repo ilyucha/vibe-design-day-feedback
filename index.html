@@ -658,31 +658,29 @@
         hint.textContent = 'Enviando seu feedback…';
 
         try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzTcmXt8UhbYSUiBdzHk3-WUuZ79pb4SsG2MGc8hwJ8oIm1PIQaOEvHtspMITuISsiC/exec', {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-        });
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzTcmXt8UhbYSUiBdzHk3-WUuZ79pb4SsG2MGc8hwJ8oIm1PIQaOEvHtspMITuISsiC/exec';
 
-        console.log('Resposta recebida:', response);
-        } catch (err) {
-        console.error('Erro na requisição:', err);
-        }
+        const response = await fetch(APPS_SCRIPT_URL, {
+         method: 'POST',
+         mode: 'no-cors',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify(data)
+         });
 
-          hint.textContent = '';
-          form.style.display = 'none';
-          successMsg.classList.add('show');
+         console.log('Resposta recebida:', response);
+  
+         hint.textContent = '';
+         form.style.display = 'none';
+         successMsg.classList.add('show');
 
-          // Log data to console for verification
-          console.log('Feedback enviado:', data);
+         console.log('Feedback enviado:', data);
 
-        } catch (err) {
-          hint.className = 'hint error';
-          hint.textContent = 'Erro ao enviar. Tente novamente.';
-          submitBtn.disabled = false;
-          console.error('Error:', err);
-        }
+       } catch (err) {
+         hint.className = 'hint error';
+         hint.textContent = 'Erro ao enviar: ' + err.message;
+         submitBtn.disabled = false;
+         console.error('Erro completo:', err);
+       }
       });
 
       checkFormValidity();
