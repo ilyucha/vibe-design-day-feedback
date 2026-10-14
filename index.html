@@ -658,16 +658,17 @@
         hint.textContent = 'Enviando seu feedback…';
 
         try {
-          // Simulate sending to Google Sheets via Apps Script
-         var response = await fetch('https://script.google.com/macros/s/AKfycbx-xAPkEf8KAvwds0KVDjN0DH7auOYu1NNhVMtpnr3Sj-nxR9RJxi5uNJMfxNAR4wCSIA/exec', {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          }).catch(function () {
-            // If no backend is configured, just show success
-            return { ok: true };
-          });
+        const response = await fetch('https://script.google.com/macros/s/AKfycbx-xAPkEf8KAvwds0KVDjN0DH7auOYu1NNhVMtpnr3Sj-nxR9RJxi5uNJMfxNAR4wCSIA/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+        });
+
+        console.log('Resposta recebida:', response);
+        } catch (err) {
+        console.error('Erro na requisição:', err);
+        }
 
           hint.textContent = '';
           form.style.display = 'none';
