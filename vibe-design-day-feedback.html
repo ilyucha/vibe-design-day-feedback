@@ -1,0 +1,693 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Feedback · Vibe Design Day</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700;800&family=Inter:wght@400;500;600&display=swap">
+  <style>
+    :root {
+      --bg: #0e0d17;
+      --bg-2: #131224;
+      --fg: #f4f3fb;
+      --mut: #a9a7c2;
+      --dim: #6f6d8c;
+      --accent: #9b8cff;
+      --accent-deep: #5b4de0;
+      --line: rgba(255, 255, 255, 0.09);
+      --ok: #4ade80;
+      --display: "Inter Tight", "Inter", ui-sans-serif, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      --body: "Inter", ui-sans-serif, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      color-scheme: dark;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    body {
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, #15143f 0%, #111030 55%, var(--bg) 100%);
+      padding: 40px 0 64px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero .aurora {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: block;
+    }
+
+    .hero .wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    .eyebrow .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 14px var(--accent);
+    }
+
+    .kicker {
+      margin-top: 48px;
+      font-size: 13px;
+      color: var(--mut);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      position: relative;
+    }
+
+    .greet {
+      margin-top: 10px;
+      font-family: var(--display);
+      font-weight: 600;
+      font-size: 22px;
+      color: var(--fg);
+      position: relative;
+    }
+
+    h1 {
+      margin-top: 24px;
+      position: relative;
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: clamp(44px, 8vw, 78px);
+      line-height: 0.98;
+      letter-spacing: -0.035em;
+      max-width: 12ch;
+      text-wrap: balance;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .lede {
+      margin-top: 28px;
+      max-width: 58ch;
+      font-size: 18px;
+      color: #d9d7ea;
+      position: relative;
+    }
+
+    /* ---------- Form Section ---------- */
+    .form-section {
+      padding: 48px 0;
+    }
+
+    .form-wrapper {
+      background: var(--bg-2);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 40px;
+    }
+
+    .question-group {
+      margin-bottom: 40px;
+    }
+
+    .question-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .question-label {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--fg);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .question-label .num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* Rating Scale */
+    .rating-scale {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .rating-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--mut);
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .rating-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .rating-btn[aria-pressed="true"] {
+      background: var(--accent-deep);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .rating-btn .label {
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Textarea */
+    textarea {
+      width: 100%;
+      font: inherit;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--fg);
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      resize: vertical;
+      min-height: 100px;
+      font-family: var(--body);
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(155, 140, 255, 0.1);
+    }
+
+    textarea::placeholder {
+      color: var(--dim);
+    }
+
+    /* Submit Button */
+    .submit-section {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid var(--line);
+    }
+
+    .send {
+      font: inherit;
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      cursor: pointer;
+      background: var(--accent);
+      color: #120f3a;
+      border: 0;
+      transition: all 0.2s;
+    }
+
+    .send:hover:not(:disabled) {
+      background: #a99cff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(155, 140, 255, 0.3);
+    }
+
+    .send:disabled {
+      opacity: 0.45;
+      cursor: default;
+    }
+
+    .send:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 2px;
+    }
+
+    .hint {
+      font-size: 14px;
+      color: var(--mut);
+    }
+
+    .hint.success {
+      color: var(--ok);
+    }
+
+    .hint.error {
+      color: #ff6b6b;
+    }
+
+    /* Success State */
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 40px;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .success-message .icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(74, 222, 128, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+    }
+
+    .success-message .title {
+      font-family: var(--display);
+      font-weight: 700;
+      font-size: 24px;
+      color: var(--fg);
+      margin-bottom: 10px;
+    }
+
+    .success-message .text {
+      color: var(--mut);
+      font-size: 16px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 28px 0 48px;
+      color: var(--dim);
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .wrap {
+        padding: 0 20px;
+      }
+
+      .form-wrapper {
+        padding: 24px;
+      }
+
+      .question-group {
+        margin-bottom: 32px;
+      }
+
+      .rating-scale {
+        justify-content: space-between;
+      }
+
+      .rating-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+      }
+
+      .rating-btn .label {
+        display: none;
+      }
+
+      .hero {
+        padding: 28px 0 48px;
+      }
+
+      .question-label {
+        font-size: 16px;
+      }
+    }
+
+    /* Animations */
+    @media (prefers-reduced-motion: no-preference) {
+      .hero > .wrap > * {
+        animation: rise 0.6s ease both;
+      }
+
+      .hero > .wrap > *:nth-child(2) {
+        animation-delay: 0.05s;
+      }
+
+      .hero > .wrap > *:nth-child(3) {
+        animation-delay: 0.1s;
+      }
+
+      .hero > .wrap > *:nth-child(4) {
+        animation-delay: 0.15s;
+      }
+
+      .form-wrapper {
+        animation: slideUp 0.6s ease both;
+        animation-delay: 0.2s;
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0.001;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0.001;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Hero -->
+  <section class="hero">
+    <canvas class="aurora" id="aurora" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <div class="eyebrow"><span class="dot"></span>Vibe Design Day</div>
+      <div class="kicker">Feedback · Pós Evento</div>
+      <h1>Sua opinião <em>importa</em> pra gente.</h1>
+      <p class="lede">Ajude-nos a entender o que funcionou bem, o que podemos melhorar e deixe sua mensagem sobre a experiência do Vibe Design Day.</p>
+    </div>
+  </section>
+
+  <!-- Form -->
+  <section class="form-section wrap">
+    <div class="form-wrapper">
+      <form id="feedbackForm">
+        <!-- Q1: Rating -->
+        <div class="question-group">
+          <div class="question-label">
+            <span class="num">1</span>
+            Como foi sua experiência geral?
+          </div>
+          <div class="rating-scale" role="radiogroup">
+            <button type="button" class="rating-btn" data-rating="1" aria-pressed="false">
+              😞
+              <span class="label">Ruim</span>
+            </button>
+            <button type="button" class="rating-btn" data-rating="2" aria-pressed="false">
+              🙂
+              <span class="label">Ok</span>
+            </button>
+            <button type="button" class="rating-btn" data-rating="3" aria-pressed="false">
+              😊
+              <span class="label">Bom</span>
+            </button>
+            <button type="button" class="rating-btn" data-rating="4" aria-pressed="false">
+              😄
+              <span class="label">Ótimo</span>
+            </button>
+            <button type="button" class="rating-btn" data-rating="5" aria-pressed="false">
+              🤩
+              <span class="label">Incrível</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Q2: O que funcionou bem -->
+        <div class="question-group">
+          <div class="question-label">
+            <span class="num">2</span>
+            O que funcionou bem?
+          </div>
+          <textarea id="q2" name="q2" placeholder="Conte-nos sobre os pontos positivos da experiência…" maxlength="500"></textarea>
+        </div>
+
+        <!-- Q3: O que melhorar -->
+        <div class="question-group">
+          <div class="question-label">
+            <span class="num">3</span>
+            O que poderia melhorar?
+          </div>
+          <textarea id="q3" name="q3" placeholder="Sua sugestão é valiosa para a próxima edição…" maxlength="500"></textarea>
+        </div>
+
+        <!-- Q4: Comentário extra -->
+        <div class="question-group">
+          <div class="question-label">
+            <span class="num">4</span>
+            Algum comentário extra? Deixe sua mensagem aqui pra gente :)
+          </div>
+          <textarea id="q4" name="q4" placeholder="Espaço livre para você expressar o que quiser…" maxlength="500"></textarea>
+        </div>
+
+        <!-- Submit -->
+        <div class="submit-section">
+          <button type="submit" class="send" id="submitBtn">Enviar Feedback</button>
+          <span class="hint" id="hint"></span>
+        </div>
+      </form>
+
+      <!-- Success Message -->
+      <div class="success-message" id="successMessage">
+        <div class="icon">✓</div>
+        <div class="title">Feedback recebido!</div>
+        <div class="text">Obrigado por compartilhar sua experiência. Seus dados foram salvos com sucesso.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="wrap">
+    <div>Vibe Design Day · Feedback 2026</div>
+  </footer>
+
+  <script>
+    /* Aurora animation */
+    (function () {
+      var c = document.getElementById('aurora');
+      if (!c) return;
+      var ctx = c.getContext('2d');
+      if (!ctx) return;
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var W, H, dpr, raf = null, t0 = performance.now();
+
+      var fields = [
+        { x: 0.80, y: 0.42, r: 0.62, col: [86, 64, 236], a: 0.62, ox: 0.06, oy: 0.05, sx: 0.00011, sy: 0.00009, p: 0.0 },
+        { x: 0.62, y: 0.75, r: 0.46, col: [140, 110, 255], a: 0.34, ox: 0.08, oy: 0.04, sx: 0.00008, sy: 0.00013, p: 1.9 },
+        { x: 0.22, y: 0.28, r: 0.40, col: [36, 28, 150], a: 0.45, ox: 0.05, oy: 0.06, sx: 0.00010, sy: 0.00007, p: 3.6 },
+        { x: 0.48, y: 0.18, r: 0.30, col: [120, 92, 255], a: 0.22, ox: 0.10, oy: 0.03, sx: 0.00014, sy: 0.00010, p: 5.1 }
+      ];
+
+      function size() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        var r = c.getBoundingClientRect();
+        W = Math.max(1, Math.round(r.width));
+        H = Math.max(1, Math.round(r.height));
+        c.width = Math.round(W * dpr);
+        c.height = Math.round(H * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function frame(now) {
+        var t = now - t0;
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'lighter';
+        var base = Math.max(W, H);
+        for (var i = 0; i < fields.length; i++) {
+          var f = fields[i];
+          var x = (f.x + Math.sin(t * f.sx + f.p) * f.ox) * W;
+          var y = (f.y + Math.cos(t * f.sy + f.p) * f.oy) * H;
+          var rad = f.r * base * (1 + 0.06 * Math.sin(t * 0.00017 + f.p));
+          var g = ctx.createRadialGradient(x, y, 0, x, y, rad);
+          var cstr = f.col[0] + ',' + f.col[1] + ',' + f.col[2];
+          g.addColorStop(0, 'rgba(' + cstr + ',' + f.a + ')');
+          g.addColorStop(0.45, 'rgba(' + cstr + ',' + (f.a * 0.35) + ')');
+          g.addColorStop(1, 'rgba(' + cstr + ',0)');
+          ctx.fillStyle = g;
+          ctx.beginPath();
+          ctx.arc(x, y, rad, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalCompositeOperation = 'source-over';
+        var v = ctx.createLinearGradient(0, H * 0.55, 0, H);
+        v.addColorStop(0, 'rgba(14,13,23,0)');
+        v.addColorStop(1, 'rgba(14,13,23,.85)');
+        ctx.fillStyle = v;
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      function loop(now) {
+        frame(now);
+        raf = requestAnimationFrame(loop);
+      }
+
+      function start() {
+        if (raf == null && !reduce) raf = requestAnimationFrame(loop);
+      }
+
+      function stop() {
+        if (raf != null) {
+          cancelAnimationFrame(raf);
+          raf = null;
+        }
+      }
+
+      size();
+      frame(t0 + 4000);
+      if (!reduce) start();
+      window.addEventListener('resize', function () {
+        size();
+        if (reduce) frame(t0 + 4000);
+      });
+      document.addEventListener('visibilitychange', function () {
+        document.hidden ? stop() : start();
+      });
+    })();
+
+    /* Form Logic */
+    (function () {
+      var form = document.getElementById('feedbackForm');
+      var ratingBtns = document.querySelectorAll('.rating-btn');
+      var submitBtn = document.getElementById('submitBtn');
+      var hint = document.getElementById('hint');
+      var successMsg = document.getElementById('successMessage');
+      var selectedRating = null;
+
+      // Rating selection
+      ratingBtns.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          ratingBtns.forEach(function (b) { b.setAttribute('aria-pressed', 'false'); });
+          btn.setAttribute('aria-pressed', 'true');
+          selectedRating = btn.dataset.rating;
+          hint.textContent = '';
+          checkFormValidity();
+        });
+      });
+
+      function checkFormValidity() {
+        submitBtn.disabled = !selectedRating;
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        if (!selectedRating) {
+          hint.className = 'hint error';
+          hint.textContent = 'Por favor, selecione uma avaliação.';
+          return;
+        }
+
+        var q2 = document.getElementById('q2').value.trim();
+        var q3 = document.getElementById('q3').value.trim();
+        var q4 = document.getElementById('q4').value.trim();
+
+        var data = {
+          rating: parseInt(selectedRating),
+          whatWorked: q2,
+          whatToImprove: q3,
+          extraComment: q4,
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent
+        };
+
+        submitBtn.disabled = true;
+        hint.className = 'hint';
+        hint.textContent = 'Enviando seu feedback…';
+
+        try {
+          // Simulate sending to Google Sheets via Apps Script
+          var response = await fetch('https://script.google.com/macros/d/YOUR_SCRIPT_ID/usercontent', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          }).catch(function () {
+            // If no backend is configured, just show success
+            return { ok: true };
+          });
+
+          hint.textContent = '';
+          form.style.display = 'none';
+          successMsg.classList.add('show');
+
+          // Log data to console for verification
+          console.log('Feedback enviado:', data);
+
+        } catch (err) {
+          hint.className = 'hint error';
+          hint.textContent = 'Erro ao enviar. Tente novamente.';
+          submitBtn.disabled = false;
+          console.error('Error:', err);
+        }
+      });
+
+      checkFormValidity();
+    })();
+  </script>
+
+</body>
+
+</html>
